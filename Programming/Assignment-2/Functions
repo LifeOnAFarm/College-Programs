@@ -1,0 +1,66 @@
+/*----------------------------------------------------------------------------------------------------------------------------
+Functions Description:			Functions from Access Panel
+Author:							Seamus de Cleir
+Date:							25/02/15
+----------------------------------------------------------------------------------------------------------------------------*/
+#define SIZE 4
+//Global Variables
+int codeEntered = false;			//Checks if the code was entered or not. Available to all functions
+int codeEncrypted;			//Checks if the code was encrytped or not. Available to all functions
+
+//codeEnter (Case 1)
+void codeEnter(int *code)
+{
+	system("cls");
+	puts("************* INPUT CODE *************"
+		"\n\nPlease enter your 4 digit code:");
+
+	for (int i = 0; i < SIZE; i++)
+	{
+		if (1 != scanf_s("%d", (code + i)))				//Fills code array
+		{ 
+			system("cls");
+			puts("\aScanf failed! Only NUMBERS must be input!\nPlease Try Again...\n");		//Scanf failed if a integer is not entered
+			return;																			//Exits to menu
+		}
+		else if (*(code + i) < 0 || *(code + i) > 9){	//Checks if the digit is between 0 and 9
+			puts("\aDigit must be between 0 and 9!");
+			i--;										//Resets digit
+			continue;
+		}
+
+	}//End for
+	codeEntered = true;
+	system("cls");
+} //End of enterCode
+
+//encrypt
+int *encrypt(int *code){
+	//Declarations
+	int i;
+	//Code Body
+	system("cls");
+	if (codeEntered == false){
+		puts("\aCode must first be entered!\n");
+		return(0);
+	}
+	puts("Your code has been ENCRYPTED\n");
+}//End of encrypt 
+
+
+//helpFun Function
+void helpFun(){
+	system("cls");
+	puts("************* HELP MENU *************"
+		"\n\nInput option [1] to enter your code."
+		"\n\nInput option [2] to encrypt your code \nand verify it matches our authorised \naccess code."
+		"\n\nInput option [3] to decrypt code using \nour patented decryption system."
+		"\n\nInput option [4] to display the number \nof times the code was entered both \ncorrectly and incorrectly."
+		"\n\nInput [x] to exit the program"
+		"\n\nWARNING: \nENCRYPTED CODE CANNOT BE DECRYPTED"
+		"\n\n*************************************"
+		"\n\nPress Enter to return....."
+		);
+	getchar();
+	getchar();
+}//End of helpFun
