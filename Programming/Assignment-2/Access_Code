@@ -1,0 +1,76 @@
+/*----------------------------------------------------------------------------------------------------------------------------
+Program Description:			Access Panel
+Author:							Seamus de Cleir
+Date:							25/02/15
+----------------------------------------------------------------------------------------------------------------------------*/
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "functions.h"
+#define SIZE 4
+
+
+main(){
+	//Declarations
+	char userInput;								//Variable used for reading the user input
+	int accessCode[SIZE] = { 4, 5, 2, 3 };
+	int *enteredCode;
+	bool accessRun = true;						//Variable used for controlling the while loop
+
+
+	//Code Body
+	if (NULL == (enteredCode = calloc(SIZE, sizeof(int))))	//Allocates memory to enteredCode
+	{
+		perror("\aCalloc failed!!");						//If allocating memory fails
+		exit(EXIT_FAILURE);
+	}
+
+
+	while (accessRun == true){
+
+		fflush(stdin);			//Clears the keyboard buffer
+		
+		//Outputs the options to console
+		puts("********** ACCESS PANEL ************");
+		printf("\n%-21s %s\n", "[1]Enter Code", "[2]Verify Code");
+		printf("\n%-19s %s\n", "[3]Decrypt Code", "[4]Attempts Made");
+		printf("\n%16s %8s\n\n", "[h]Help", "[x]Exit");
+		puts("************************************");
+
+		userInput = getchar();			//Stores the user's input
+
+		switch (userInput)				//Exectues the users choice
+		{
+		case '1':
+			codeEnter(enteredCode);
+			break;
+		case '2':
+			system("cls");
+			encrypt(enteredCode);
+			break;
+		case '3':
+			system("cls");
+			for (int i = 0; i < SIZE; i++){
+				printf("%d", *(enteredCode + i));
+			}
+			break;
+		case '4':
+			system("cls");
+			break;
+		case 'h':
+			helpFun();
+			system("cls");
+			break;
+		case 'x':
+			//Exits the system
+			accessRun = false;
+			return 0;
+		default:
+			//User enters wrong input
+			system("cls");
+			break;
+		}
+	}
+
+	free(enteredCode);
+}//End of main
