@@ -1,0 +1,93 @@
+/*--------------------------------------------------------------------------------------------------------
+Program Description:			Finds the biggest number, smallest number and the average of an array
+Co-Author:						Seamus de Cleir
+Date:							03/02/15
+--------------------------------------------------------------------------------------------------------*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <conio.h>
+#define N 17							//Modded from 20 to 17
+//using namespace std;
+
+// function prototypes
+
+int max_element(int A[], int n);
+int min_element(int A[], int n);
+float mean_element(int A[], int n);
+
+void main()
+{
+	int A[N];         //declare array A, of size N to store the numbers
+	int i;
+	int small, large;
+	float mean;
+
+	// setup an array A of elements, all integers.
+
+	for (i = 0; i < N; i++)
+	{
+		A[i] = i + 1;
+	}
+
+	//Modify elements
+	A[10] = 25;
+	A[11] = -5;
+	// Compute the smallest, largest and the average element
+
+	small = min_element(A, N);
+	large = max_element(A, N);
+	mean = mean_element(A, N);
+
+	printf("\n\n  Output of Results ");
+	printf("\n_____________________________________");
+	printf("\n  Min  element is %5d          ", small);
+	printf("\n  Max  element is %5d          ", large);
+	printf("\n  Mean element is %5.2f        ", mean);
+	printf("\n_____________________________________");
+
+	getch();
+}
+
+int min_element(int A[], int n)
+{
+	//Declarations
+	int min = A[0];										//Sets min to first array element
+	int i;
+	//Code Body
+	for (i = 0; i < n; i++){
+		if (A[i] < min){								//Compares min to the next number in the array and checks if it is lower
+			min = A[i];									//Sets min to the array number if it is lower
+		}
+	}
+	return min;											//Returns the lowest number
+}
+
+int max_element(int A[], int n)
+{
+	//Declarations
+	int max = A[0];										//Sets max to first array element
+	int i;
+	//Code Body
+	for (i = 0; i < n; i++){
+		if (A[i] > max){								//Compares max to the next number in the array and checks if it is higher
+			max = A[i];									//Sets max to the array number if it is higher
+		}
+	}
+	return max;											//Returns the highest number
+}
+
+float mean_element(int A[], int n)
+{
+	//Declarations
+	int i;
+	int  sum = 0;
+	float mean;
+	//Code Body
+	for (i = 0; i < n; i++){
+		sum += A[i];									//Adds each number in an array to sum
+	}
+	mean = (float)sum / n;										//Sets mean equal to the sum of an array divided by the number of elements
+	return mean;										//Returns mean
+
+}
