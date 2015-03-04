@@ -1,0 +1,132 @@
+/*---------------------------------------------------------------------------------------------
+Program Description:			ATM Machine
+Author:							Seamus de Cleir
+Date:							03/11/2014
+---------------------------------------------------------------------------------------------*/
+#include <stdio.h>
+#define SIZE 4												//Number of PIN numbers needed can be easily changed
+
+//Functions Area
+int PinCheck(int Pin[], int inputPin[]);
+void arrayInput(int inputAry[]);
+
+main(){
+	//Declarations Area
+	int input, correct, incorrect, i, PinCor, arySize;
+	int Pin[SIZE] = { 1, 2, 3, 4 };
+	int tempPin[SIZE] = { 0 };
+	int tempPin2[SIZE] = { 0 };
+	int inputPin[SIZE] = { 0 };
+	
+	input = correct = incorrect = i = PinCor = arySize = 0;
+
+	//Code Body
+	puts("Welcome to Woodgrove Bank. \nWhere the costumer is always right!\n");
+
+	while (input != 4){										//When the input is 4 the program exits
+		puts("Select an option: \n1: Enter PIN \n2: Change PIN \n3: Number of PIN Attempts Used \n4: Exit");
+		scanf("%d", &input);
+		_flushall();										//Prevents buffer overloaded if a character is entered
+
+		switch (input){
+		
+		case 1:											
+			puts("Please Enter your PIN:");					//Asks for user input
+
+			arrayInput(inputPin);							//Puts user input into an Array called inputPin
+
+			PinCor = PinCheck(Pin, inputPin);				//Checks number of matching elements
+
+			if (PinCor == SIZE){							//If the counter is 4(all elements match) the balance is shown
+				puts("\nThat PIN is correct. \nYour Balance is currently -$0.10 \n");
+				correct++;									//The correct PIN attempt is registered
+			}
+			else{											//If the counter is not 4 the PIN is incorrect
+				puts("\nThat PIN is incorrect. \nPlease try again or contact the Bank on 0881 02803080\n");
+				incorrect++;								//A failed attempt is registered
+			}//End of IF
+
+			PinCor = 0;										//Resets the element match counter
+			break;
+		
+		case 2:
+			puts("\nPlease Enter your PIN:");
+
+			arrayInput(inputPin);							//Puts user input into an Array called inputPin
+
+			PinCor = PinCheck(Pin, inputPin);				//Checks number of matching elements
+
+			if (PinCor == SIZE){							//Checks if the number of matching elements is 4
+				puts("\nThat's correct. Enter your new 4-digit PIN:");
+				arrayInput(tempPin);						//Creates a temporary new PIN
+				puts("\nEnter your new PIN again to Verify:");
+				arrayInput(tempPin2);						//Creates another temporary new PIN
+
+				PinCor = PinCheck(tempPin, tempPin2);		//Compares the two temporary PINs
+
+				if (PinCor == SIZE){
+					for (i = 0; i < SIZE; i++){				//Sets the new PIN
+						Pin[i] = tempPin[i];
+					}
+					puts("\nNew PIN set\n");
+				}
+				else{										//An Error is shown if the PINs do not match
+					puts("\nError: New PIN does not match.\n");
+				}//End of IF
+				
+				correct++;									//The correct PIN attempt is registered
+
+			}
+			else{
+				puts("\nThat PIN is incorrect. \nPlease try again or contact the Bank on 0881 02803080\n");
+				incorrect++;								//A failed attempt is registered
+			}//End of IF
+
+			PinCor = 0;										//Resets the element match counter
+			break;
+		
+		case 3:
+			printf("\nCorrect PIN Attempts: %d\nIncorrect PIN Attempts: %d\n\n", correct, incorrect);	//Shows Pin Attempts
+			break;
+		
+		case 4:
+			break;
+		default:
+			break;
+		}//End of SWITCH
+
+	}//End of WHILE
+
+	puts("\nThanks for choosing Woodgrove Bank. Have a Wonderful day.");
+
+}//End of MAIN
+
+
+int PinCheck(int Pin[], int inputPin[]){
+	//Declarations Area
+	int i = 0;
+	int Correct = 0;
+
+	//Code Body
+	for (i = 0; i < SIZE; i++){						//Adds one to a Counter if an element in Pin matches inputPin
+		if (Pin[i] == inputPin[i]){
+			Correct++;
+		}//End of IF
+	}//End of FOR
+	return Correct;									//Returns Counter value
+}
+
+void arrayInput(int inputAry[]){
+	//Declarations Area
+	int i = 0;
+
+	//Code Body
+	for (i = 0; i < SIZE; i++){						//Puts user input into an Array 
+		do{
+			scanf("%d", &inputAry[i]);				//Only accesses the numbers 0 - 9 as input
+			if (inputAry[i] < 0 || inputAry[i] > 9){
+				puts("Error: Enter a single digit at a time. Please continue...");
+			}
+		} while (inputAry[i] < 0 || inputAry[i] > 9);
+	}//End of FOR
+}
