@@ -5,7 +5,7 @@ Date:							25/02/15
 ----------------------------------------------------------------------------------------------------------------------------*/
 #define SIZE 4
 //Global Variables
-int codeEntered = false;	//Checks if the code was entered or not. Available to all functions
+bool codeEntered = false;	//Checks if the code was entered or not. Available to all functions
 int codeEncrypted;			//Checks if the code was encrytped or not. Available to all functions
 int success = 0;			//Counts number of successful code enteries
 int fail = 0;				//Counts number of failed code enteries
