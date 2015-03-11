@@ -5,8 +5,10 @@ Date:							25/02/15
 ----------------------------------------------------------------------------------------------------------------------------*/
 #define SIZE 4
 //Global Variables
-int codeEntered = false;			//Checks if the code was entered or not. Available to all functions
+int codeEntered = false;	//Checks if the code was entered or not. Available to all functions
 int codeEncrypted;			//Checks if the code was encrytped or not. Available to all functions
+int success = 0;			//Counts number of successful code enteries
+int fail = 0;				//Counts number of failed code enteries
 
 //codeEnter (Case 1)
 void codeEnter(int *code)
@@ -20,7 +22,7 @@ void codeEnter(int *code)
 		if (1 != scanf_s("%d", (code + i)))				//Fills code array
 		{ 
 			system("cls");
-			puts("\aScanf failed! Only NUMBERS must be input!\nPlease Try Again...\n");		//Scanf failed if a integer is not entered
+			puts("\aNumber scan failed! Only NUMBERS can be input!\nPlease Try Again...\n");		//Scanf failed if a integer is not entered
 			return;																			//Exits to menu
 		}
 		else if (*(code + i) < 0 || *(code + i) > 9){	//Checks if the digit is between 0 and 9
@@ -30,25 +32,123 @@ void codeEnter(int *code)
 		}
 
 	}//End for
-	codeEntered = true;
+	codeEncrypted = false;		//Tells the program that the code is not encrypted
+	codeEntered = true;			//Tells the program that a code has been entered
 	system("cls");
 } //End of enterCode
 
-//encrypt
-int *encrypt(int *code){
+
+//encrypt (Case 2)
+void *encrypt(int *code, int *access){
 	//Declarations
 	int i;
+	int swap = *code;
+	int count = 0;
+
 	//Code Body
 	system("cls");
-	if (codeEntered == false){
+	if (codeEntered == false){							//If a code has not been entered it can not be encrypted
 		puts("\aCode must first be entered!\n");
 		return(0);
 	}
-	puts("Your code has been ENCRYPTED\n");
+	else if (codeEncrypted == true){					//If a code is already encrypted it can not be encrypted
+		puts("\aEncrypted codes can not be encrypted!\n");
+
+	}else{
+		//Swaps the 1st element for the 3rd and the 2nd for the fourth
+		*code = *(code + 2);
+		*(code + 2) = swap;
+		swap = *(code + 1);
+		*(code + 1) = *(code + 3);
+		*(code + 3) = swap;
+
+		for (i = 0; i < SIZE; i++){		//Adds one to each element
+			*(code + i) = *(code + i) + 1;
+			if (*(code + i) == 10){			//If an element is 10 then that element is changed to 0
+				*(code + i) = 0;
+			}//End of if
+		}//End of For
+
+		puts("Your code has been ENCRYPTED\n");
+
+	}//End of If
+
+	for (i = 0; i < SIZE; i++){
+		if (*(code + i) == *(access + i)){	//If codes matches count is incremented 
+			count++;
+		}//End of if
+	}//End of for
+
+
+	if (count == 4){		//If the all codes match the Vault is opened
+		puts("That code is correct! You have unlocked the Vault 101 door. \nGood luck in Capital Wasteland.\n");
+		success++;
+	}
+	else{					//If the code is incorrect the Vault remains closed
+		puts("\aThat code is incorrect! Access to Capital Wasteland is denied.\n");
+		fail++;
+	}//End of if
+
+	codeEncrypted = true;
 }//End of encrypt 
 
 
-//helpFun Function
+//decrpyt (Case 3)
+void decrypt(int *code){
+	//Declarations
+	int i;
+	int swap;
+
+	//Code Body
+	system("cls");
+
+	if (codeEntered == false || codeEncrypted == false){
+		puts("\aCode must be entered and encrypted before it can be decrypted!\n");
+		return(0);
+	}
+	else{
+		for (i = 0; i < SIZE; i++){		//Take away one from each element
+			*(code + i) = *(code + i) - 1;
+			if (*(code + i) == -1){			//If an element is -1 then that element is changed to 9
+				*(code + i) = 9;
+			}//End of if
+		}//End of For
+
+		//Swaps the 1st element for the 3rd and the 2nd for the fourth
+		swap = *code;
+		*code = *(code + 2);
+		*(code + 2) = swap;
+		swap = *(code + 1);
+		*(code + 1) = *(code + 3);
+		*(code + 3) = swap;
+		
+		puts("Your code has been decrypted. The code is:");		//Prints code
+
+		for (int i = 0; i < SIZE; i++){			//Prints code
+			printf("%d", *(code + i));
+		}
+		puts("\n ");
+
+		codeEncrypted = false;		//Tells the program that the code is now decrypted
+	}//End of for
+
+}//End of decrypt
+
+
+//successFailCount (Case 4)
+void successFailCount(){
+	system("cls");
+	puts("****** SUCCESSES AND FAILURES ******");
+	printf("\n%-21s %d\n", "Number of code successes:", success);
+	printf("\n%-21s %d\n", "Number of code failures:", fail);
+	puts("\n\n************************************"
+		"\n\nPress Enter to return.....");
+	getchar();
+	getchar();
+}//End of successFailCount
+
+
+//helpFun (Case h)
 void helpFun(){
 	system("cls");
 	puts("************* HELP MENU *************"
@@ -57,7 +157,7 @@ void helpFun(){
 		"\n\nInput option [3] to decrypt code using \nour patented decryption system."
 		"\n\nInput option [4] to display the number \nof times the code was entered both \ncorrectly and incorrectly."
 		"\n\nInput [x] to exit the program"
-		"\n\nWARNING: \nENCRYPTED CODE CANNOT BE DECRYPTED"
+		"\n\nWARNING: \nUNENCRYPTED CODE CANNOT BE DECRYPTED"
 		"\n\n*************************************"
 		"\n\nPress Enter to return....."
 		);
