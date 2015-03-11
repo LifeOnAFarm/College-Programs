@@ -1,5 +1,5 @@
 /*----------------------------------------------------------------------------------------------------------------------------
-Program Description:			Access Panel
+Program Description:			Vault Panel
 Author:							Seamus de Cleir
 Date:							25/02/15
 ----------------------------------------------------------------------------------------------------------------------------*/
@@ -7,7 +7,6 @@ Date:							25/02/15
 #include <stdlib.h>
 #include <stdbool.h>
 #include "functions.h"
-#define SIZE 4
 
 
 main(){
@@ -15,7 +14,7 @@ main(){
 	char userInput;								//Variable used for reading the user input
 	int accessCode[SIZE] = { 4, 5, 2, 3 };
 	int *enteredCode;
-	bool accessRun = true;						//Variable used for controlling the while loop
+	bool programRun = true;						//Variable used for controlling the while loop
 
 
 	//Code Body
@@ -26,7 +25,7 @@ main(){
 	}
 
 
-	while (accessRun == true){
+	while (programRun == true){
 
 		fflush(stdin);			//Clears the keyboard buffer
 		
@@ -42,28 +41,30 @@ main(){
 		switch (userInput)				//Exectues the users choice
 		{
 		case '1':
+			//Enter Code 
 			codeEnter(enteredCode);
 			break;
 		case '2':
-			system("cls");
-			encrypt(enteredCode);
+			//Encrypt and verify code
+			encrypt(enteredCode, accessCode);
 			break;
 		case '3':
-			system("cls");
-			for (int i = 0; i < SIZE; i++){
-				printf("%d", *(enteredCode + i));
-			}
+			//Decrypt and display code
+			decrypt(enteredCode);
 			break;
 		case '4':
+			//Displays successes and failures
+			successFailCount();
 			system("cls");
 			break;
 		case 'h':
+			//Shows Help menu
 			helpFun();
 			system("cls");
 			break;
 		case 'x':
-			//Exits the system
-			accessRun = false;
+			//Exits the program
+			programRun = false;
 			return 0;
 		default:
 			//User enters wrong input
