@@ -18,7 +18,7 @@ main(){
 
 
 	//Code Body
-	if (NULL == (enteredCode = calloc(SIZE, sizeof(int))))	//Allocates memory to enteredCode
+	if (NULL == (enteredCode = (int *)calloc(SIZE, sizeof(int))))	//Allocates memory to enteredCode
 	{
 		perror("\aCalloc failed!!");						//If allocating memory fails
 		exit(EXIT_FAILURE);
@@ -65,7 +65,6 @@ main(){
 		case 'x':
 			//Exits the program
 			programRun = false;
-			return 0;
 		default:
 			//User enters wrong input
 			system("cls");
