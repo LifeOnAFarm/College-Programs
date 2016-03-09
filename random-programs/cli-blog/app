@@ -1,0 +1,6 @@
+from models.post import Post
+from database import Database
+
+__author__ = "Seamus de Cleir"
+
+Database.initialize()
